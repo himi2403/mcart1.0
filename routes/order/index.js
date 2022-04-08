@@ -6,7 +6,7 @@ const schema = require("./schema")
 const router = express.Router()
 const token = require("../../helpers/jwt_helpers")
 
-router.post("/customer/postOrder", orderRouter.postorder)
+router.post("/customer/postOrder",requestValidator(schema.getId), orderRouter.postorder)
 // router.get("/customer/postOrders/", orderRouter.updateOrderStatus)
 router.get("/customer/updateOrder/:id", orderRouter.updateOrderStatus)
 router.delete("/customer/cancelOrder", orderRouter.cancelOrder)

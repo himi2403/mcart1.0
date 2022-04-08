@@ -121,7 +121,7 @@ const merchantupdate  = async(req,res,next) =>{
     //  let newPassword = await bcryptjs.hashSync(req.body.password,salt)
      result = await Merchant.updateOne({_id:id},
         {
-            $set:{firstName,lastNane,dateOfBirth,phoneNumber,category,brandName}
+            $set:{firstName,lastName,dateOfBirth,phoneNumber,category,brandName}
         })
         // res.send(result)
         .then((result) =>{

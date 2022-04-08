@@ -36,15 +36,17 @@ let { id } = req.query
 
 const addToCart = async (req, res) => {
 let  checkUnit = await productmodel.findOne({_id:req.body.productId},{unit:1})
+console.log("checkUnit", checkUnit)
 if(checkUnit.unit>=req.body.quantity){
+  console.log("quantity", req.body.quantity)
   if (req.body.quantity == undefined || req.body.quantity == null) { quantity = 1 }
 
 
   var customer = await customermodel.findOne({ _id: req.query.id })
-  console.log("------------",customer);
+  // console.log("------------",customer);
   var cost = await productmodel.findOne({ _id: req.body.productId },{discount_cost :1 })
 
-  console.log("777777777777",cost);
+  // console.log("777777777777",cost);
   if (customer != null || !cost) {
 
     var cartid = await customermodel.findOne({ _id : req.query.id }, { cart: 1 })
@@ -124,7 +126,7 @@ errors: {
     error_code: "failed to add to cart",
     error_msg: "stock unable"
   },
-  message: "stocke is not available"
+  message: "stock is not available"
 })
 
 }

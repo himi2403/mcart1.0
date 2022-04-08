@@ -9,16 +9,16 @@ const orderSchema = new mongoose.Schema({
         type:mongoose.Schema.Types.ObjectId ,
         ref:"customer"
     },
-    cartId:{
-        type:mongoose.Schema.Types.ObjectId,
-        ref:"cart"
-    },
     address:{
         type:mongoose.Schema.Types.ObjectId,
         ref:"address"
     },
-    email:{
-        type:String
+    quantity:{
+        type:Number,
+        default:true
+    }, 
+    price:{
+        type:Number,
     },
     status: {
         type: String, 

@@ -23,7 +23,7 @@ let getAllProduct
     }
     try{
          getAllProduct = await productModel.find({}).populate("merchant_id").limit(limit).skip(skip)
-         console.log("getAllCustomer", getAllProduct)
+        //  console.log("getAllCustomer", getAllProduct)
 
          return res.status(HttpStatus.OK).json({result:getAllProduct, status:200, success: true})
         //  getAllProduct= await productModel.find().populate("merchant_id")
@@ -80,7 +80,7 @@ const loginWithPhoneNumber = async(req,res) =>{
 let {email,otp} = req.body
 
     try{
-        if(email != null || email !=0){
+        if(email != null || otp !=0){
             if(otp!=null){
                 let findEmail = await customerModel.findOne({email:req.body.email})
                 console.log(findEmail)

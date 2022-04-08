@@ -35,6 +35,7 @@ module.exports = {
             if (err) {
                 return next(errors.unAuthorizedUserError);
             } else {
+                console.log("lkshdlsalh",payload)
                 req.userId = payload.aud;
                 let userData = await merchantmodel.findById(req.userId);
                 // let userdataProduct = await  productModel.findById()
