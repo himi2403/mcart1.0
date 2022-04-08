@@ -6,6 +6,7 @@ const HttpStatus = require("http-status")
 const jwt_helpers = require("../helpers/jwt_helpers")
 const jwt = require("jsonwebtoken")
 const { result } = require("lodash")
+const { signAccessTokencustomer } = require("../helpers/jwt_helpers")
 
 const { Types } = require('mongoose');
 // const errors = require("../errors/index")
@@ -36,6 +37,7 @@ let getAllProduct
 const addCustomer = async(req,res,next) =>{
     let {email} = req.body
     let saveDetail
+    let accessToken
     try{
         const customerAllreadyExist = await customerModel.findOne({ "email": { $regex: new RegExp(email, "i") } });
         if (customerAllreadyExist) {
@@ -43,10 +45,12 @@ const addCustomer = async(req,res,next) =>{
     }
     var customer = new customerModel( {...req.body});
         saveDetail = await customer.save();
+        accessToken = await signAccessTokencustomer(saveDetail.id);
+        console.log("asss",accessToken);
     }catch(error){
         return next({error: error, message:error.message, status:500, success: false})
     }
-    res.status(HttpStatus.OK).json({result :saveDetail, status:200, success:true})
+    res.status(HttpStatus.OK).json({result :saveDetail, status:200, success:true, token:accessToken})
 }
 const findcustomerDeatil = async(req,res,next) =>{
     // let findDetail
@@ -87,8 +91,10 @@ let {email,otp} = req.body
                 if(findEmail!=null){
                     let  private_key ="sggfiqgljhfjahdjakshdjkashdjkahsdkjah";
                           let  params  = {email, otp}
-                        const token = await jwt.sign(params,private_key,{expiresIn:"1d"})
-                        res.send({token:token})
+                        // const token = await jwt.sign(params,private_key,{expiresIn:"1d"})
+                        // res.send({token:token})
+                        const accessToken = await signAccessTokencustomer(customer.id);
+
                 }
                 else{
                     res.send(errors.emailNotExist)  
