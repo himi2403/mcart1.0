@@ -16,6 +16,7 @@ const addCategory = async(req,res,next) =>{
     }
     catch(error) {
         return next(error)
+        //clkasdfjhsda
     }
     res.status(HttpStatus.OK).json({message: "categoryAdd Successfully", data:Category, status:200, success:true})
 }
