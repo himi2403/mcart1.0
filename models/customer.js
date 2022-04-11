@@ -9,13 +9,13 @@ const customerSchema =  mongoose.Schema({
         type:String,
         minLength:[3,"Enter minimum 2 words"],
         maxLength:[30,"Enter the maximum 30"],
-        match:[/^[a-z .'-]+$/i,"Enter valid first name"]
+        match:[/^[A-Z]+[a-zA-Z ]*([A-Z]*[a-z]+[ ])*[ ]*[0-9]*$/,"Enter valid first name"]
     },
     lastName:{
         type:String,
         minLength:[3,"Enter minimum 2 words"],
         maxLength:[30,"Enter the maximum 30"],
-        // match:[/^[a-z .'-]+$/i,"Enter valid lastname name"]
+        match:[/^[A-Z]+[a-zA-Z ]*([A-Z]*[a-z]+[ ])*[ ]*[0-9]*$/,"Enter valid lastname name"]
     },
     dob:{
         type:Date,
