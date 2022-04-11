@@ -109,17 +109,17 @@ let {email,otp} = req.body
     }
 }
 const updateAddress = async (req,res,next) => {
-    const {address_id}  = req.query
+    const {id}  = req.query
     let findAddress
     let findCustomer
    try{
-       findAddress = await addressModel.findById({_id:Types.ObjectId(address_id)})
+       findAddress = await addressModel.findOne({_id:id})
     //    console.log(findAddress)
       const customer_Id = findAddress.customer_Id
       console.log('customer_Id',customer_Id)
       const newAdress = (findAddress.houseNo+" "+findAddress.streetName+" "+findAddress.area+" "+findAddress.city+" "+findAddress.pincode).toString()
     //    console.log(newAdress)
-     findCustomer = await customerModel.findByIdAndUpdate({_id:customer_Id}, {
+     findCustomer = await addressModel.findOne({_id:customer_Id}, {
            $set:{address:newAdress}
        },{new:true}
        )
