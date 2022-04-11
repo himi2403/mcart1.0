@@ -8,12 +8,14 @@ const customerSchema =  mongoose.Schema({
     firstName:{
         type:String,
         minLength:[3,"Enter minimum 2 words"],
-        maxLength:[30,"Enter the maximum 30"]
+        maxLength:[30,"Enter the maximum 30"],
+        match:[/^[a-z .'-]+$/i,"Enter valid first name"]
     },
     lastName:{
         type:String,
         minLength:[3,"Enter minimum 2 words"],
-        maxLength:[30,"Enter the maximum 30"]
+        maxLength:[30,"Enter the maximum 30"],
+        match:[/^[a-z .'-]+$/i,"Enter valid lastname name"]
     },
     dob:{
         type:Date,
@@ -22,7 +24,8 @@ const customerSchema =  mongoose.Schema({
     gender:{
         type:String,
         value:{enum:["Male","male", "Female", "female", "other","Other"]}, 
-        message:["(value) is not support"]
+        message:["(value) is not support"],
+        
     },
     phoneNumber:{
         type:Number,

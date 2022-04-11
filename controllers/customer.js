@@ -54,7 +54,7 @@ const addCustomer = async(req,res,next) =>{
 }
 const findcustomerDeatil = async(req,res,next) =>{
     // let findDetail
-    const {email} = req.body
+    let {email} = req.query
     try{
         const detail  = await customerModel.find({"email": {$regex: new RegExp(email, "i")}}).populate("address")
         if(!detail){
@@ -139,7 +139,7 @@ const getAllCustomerAddress = async(req,res,next) =>{
             },
             {
                 $lookup:{
-                    from:"addresses",
+                    from:"address",
                     localField:"_id",
                     foreignField:"customer_Id",
                     as:"customer_Address"
