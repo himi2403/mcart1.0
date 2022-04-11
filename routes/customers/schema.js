@@ -1,8 +1,8 @@
 const Joi = require("joi")
 
  const addAddress = Joi.object().keys({
-    firstName:Joi.string().regex(/^[a-zA-Z ]+$/).min(2).max(35).required(),
-    lastName:Joi.string().regex(/^[a-zA-Z ]+$/).min(2).max(35).required(),
+    firstName:Joi.string().regex(/^(?=.{1,10}$)[a-z]+(?:[a-z]+)*$/i).min(2).max(35).required(),
+    lastName:Joi.string().regex(/^(?=.{1,10}$)[a-z]+(?:[a-z]+)*$/i).min(2).max(35).required(),
     dob:Joi.date().required(),
     gender:Joi.string().required(),
     phoneNumber:Joi.number().required(),
@@ -12,4 +12,6 @@ const Joi = require("joi")
     isActive:Joi.boolean().required(),
     address:Joi.string().allow(null, '')
  })
-
+module.exports ={
+   addAddress
+}

@@ -1,9 +1,11 @@
 const customerRouter = require("../../controllers/customer")
 const express = require("express")
 const router = express.Router()
+const { requestValidator } = require('../../middleware');
+const schema = require('./schema');
 const token = require("../../helpers/jwt_helpers")
 
-router.post("/customer/add", customerRouter.addCustomer)
+router.post("/customer/add",requestValidator(schema.addAddress) ,customerRouter.addCustomer)
 router.get("/customer/getProfile/:id",  customerRouter.getAllCustomerAddress)
 router.get("/customer/getdetail", customerRouter.findcustomerDeatil)
 router.get("/customer/find", customerRouter.searchAndFilter)

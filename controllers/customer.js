@@ -63,7 +63,8 @@ const findcustomerDeatil = async(req,res,next) =>{
             res.status(HttpStatus.OK).json({result:detail, success:200, status:true})
         }
     }catch(error){
-        return res.send({err:error.message, status:false, })
+
+        return res.send({err:error.message, status:false, success:false})
     }
 }
 const searchAndFilter = async(req,res,next) =>{
