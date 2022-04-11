@@ -45,8 +45,8 @@ const addCustomer = async(req,res,next) =>{
     }
     var customer = new customerModel( {...req.body});
         saveDetail = await customer.save();
-        accessToken = await signAccessTokencustomer(saveDetail.id);
-        console.log("asss",accessToken);
+        // accessToken = await signAccessTokencustomer(saveDetail.id);
+        // console.log("asss",accessToken);
     }catch(error){
         return next({error: error, message:error.message, status:500, success: false})
     }
@@ -116,18 +116,20 @@ const updateAddress = async (req,res,next) => {
        findAddress = await addressModel.findOne({_id:id})
     //    console.log(findAddress)
       const customer_Id = findAddress.customer_Id
+    //   console.log("hhdfjaf",)
       console.log('customer_Id',customer_Id)
-      const newAdress = (findAddress.houseNo+" "+findAddress.streetName+" "+findAddress.area+" "+findAddress.city+" "+findAddress.pincode).toString()
+    //   const newAdress = (findAddress.houseNo+" "+findAddress.streetName+" "+findAddress.area+" "+findAddress.city+" "+findAddress.pincode).toString()
     //    console.log(newAdress)
-     findCustomer = await addressModel.findOne({_id:customer_Id}, {
-           $set:{address:newAdress}
-       },{new:true}
-       )
+    const newAdress = req.body
+    console.log("new", newAdress)
+     findCustomer = await addressModel.updateOne({customer_Id:customer_Id}, {
+           $set:req.body
+       },{new:true})
+       return res.send({result:findCustomer, status:200 , message: "this "})
 
    }catch(error){
        return res.send(error)
    }
-    return res.send({result:findCustomer})
 }
    
 const getAllCustomerAddress = async(req,res,next) =>{
@@ -140,7 +142,7 @@ const getAllCustomerAddress = async(req,res,next) =>{
             },
             {
                 $lookup:{
-                    from:"address",
+                    from:"addresses",
                     localField:"_id",
                     foreignField:"customer_Id",
                     as:"customer_Address"
@@ -152,6 +154,7 @@ const getAllCustomerAddress = async(req,res,next) =>{
                 
             }
         ])
+        console.log("kdfjasd",findProfile )
    }catch(error){
        return next({error:error})
    }
