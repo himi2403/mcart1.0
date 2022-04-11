@@ -15,7 +15,7 @@ const customerSchema =  mongoose.Schema({
         type:String,
         minLength:[3,"Enter minimum 2 words"],
         maxLength:[30,"Enter the maximum 30"],
-        match:[/^[a-z .'-]+$/i,"Enter valid lastname name"]
+        // match:[/^[a-z .'-]+$/i,"Enter valid lastname name"]
     },
     dob:{
         type:Date,

@@ -35,6 +35,7 @@ let { id } = req.query
 //addtocart
 
 const addToCart = async (req, res) => {
+  let {productId} = req.body
 let  checkUnit = await productmodel.findOne({_id:req.body.productId},{unit:1})
 console.log("checkUnit", checkUnit)
 if(checkUnit.unit>=req.body.quantity){
