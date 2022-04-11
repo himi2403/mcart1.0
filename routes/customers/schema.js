@@ -1,7 +1,7 @@
 const Joi = require("joi")
 
  const addAddress = Joi.object().keys({
-    firstName:Joi.string().regex(/^(?=.{1,10}$)[a-z]+(?:[a-z]+)*$/i).min(2).max(35).required(),
+    firstName:Joi.string().regex(/^(?=.{1,10}$)[a-z]+(?:[a-z]+)*$/i).min(2).max(39).required(),
     lastName:Joi.string().regex(/^(?=.{1,10}$)[a-z]+(?:[a-z]+)*$/i).min(2).max(35).required(),
     dob:Joi.date().required(),
     gender:Joi.string().required(),
