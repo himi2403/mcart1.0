@@ -74,7 +74,7 @@ if(checkUnit.unit>=req.body.quantity){
        {
          flag=1
          products.quantity=(products.quantity)+Number(req.body.quantity);
-         console.log("d", products.quantity)
+        //  console.log("d", products.quantity)
        }
        }
       )

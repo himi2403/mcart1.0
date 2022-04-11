@@ -12,6 +12,7 @@ const customerRouter =  require("./routes/customers/index")
 const addressRouter = require("./routes/address/index")
 const cartRouter = require("./routes/cart/index")
 const payment = require("./routes/payment/index")
+const adminRouter = require("./routes/admin/index")
 
 const app = express();
 app.use(morgan('dev'));
@@ -27,6 +28,7 @@ app.use("/dev-api-mcart.com", customerRouter)
 app.use("/dev-api-mcart.com/address", addressRouter)
 app.use("/dev-api-mcart.com/cart", cartRouter)
 app.use("/dev-api-mcart.com/payment", payment)
+app.use("/dev-api-mcart.com/admin", adminRouter)
 
     app.use(async(req,res,next)=>{
         next(createError.NotFound('This route does not exist'))

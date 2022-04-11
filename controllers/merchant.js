@@ -133,21 +133,21 @@ const merchantupdate  = async(req,res,next) =>{
         })
 
    }
- const merchantProfile = async(req,res, next) =>{
-     let merchant
-     try{
-         merchant = await Merchant.findById(req.params.id).exec()//
+    const merchantProfile = async(req,res, next) =>{
+        let merchant
+        try{
+            merchant = await Merchant.findById(req.params.id).exec()//
 
 
-     }catch(error){
-         return next(error)
-     }
-     if(!merchant){
-         return res.send(errors.merchantDoesNotExist)
-     }
-     return res.status(HttpStatus.OK).json({message: "profile found", data:merchant, status:200, success:true})
-       } 
-       
+        }catch(error){
+            return next(error)
+        }
+        if(!merchant){
+            return res.send(errors.merchantDoesNotExist)
+        }
+        return res.status(HttpStatus.OK).json({message: "profile found", data:merchant, status:200, success:true})
+        } 
+        
 const productgetbymerchantid = async(req,res,next) =>{
         let limit = 0 ; let skip = 0
         // if(req.query.limit!=null || req.query.limit!=0){

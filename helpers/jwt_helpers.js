@@ -4,6 +4,7 @@ require('dotenv').config()
 const merchantmodel = require("../models/merchant")
 const productModel = require("../models/productschema")
 const customerModel = require("../models/customer")
+const adminModel = require("../models/admin")
 
 module.exports = {
     signAccessToken: (userId) => {
@@ -36,7 +37,7 @@ module.exports = {
             if (err) {
                 return next(errors.unAuthorizedUserError);
             } else {
-                console.log("lkshdlsalh",payload)
+                // console.log("lkshdlsalh",payload)
                 req.userId = payload.aud;
                 let userData = await merchantmodel.findById(req.userId);
                 // let userdataProduct = await  productModel.findById()
@@ -92,9 +93,45 @@ verifyAccessTokencustommer: (req, res, next) => {
         if (err) {
             return next(errors.unAuthorizedUserError);
         } else {
-            console.log("lkshdlsalh",payload)
+            // console.log("lkshdlsalh",payload)
             req.customerId = payload.aud;
             let userData = await customerModel.findById(req.customerId);
+            return next(null, userData);
+        }
+    })
+},
+signAccessTokenAdmin: (AdminId) => {
+    return new Promise((resolve, reject) => {
+        const payload = {
+        }//token
+        const secret = process.env.ACCESS_TOKEN_SECRET_Admin
+        const options = {
+            expiresIn: "1y",
+            issuer: "mCart.com",
+            audience: AdminId.toString()
+        }
+        JWT.sign(payload, secret, options, (err, token) => {
+            if (err) {
+                reject(errors.internalError);
+            } else {
+                resolve(token);
+            }
+        })
+    })
+},
+verifyAccessTokenAdmin: (req, res, next) => {
+    const jwtToken = req.headers['authorization'] || req.headers['Authorization'];
+    // console.log(jwtToken)
+    if (!jwtToken) {
+        return next(errors.tokenUbsentError);
+    }
+    JWT.verify(jwtToken, process.env.ACCESS_TOKEN_SECRET_Admin, async (err, payload) => {
+        if (err) {
+            return next(errors.unAuthorizedUserError);
+        } else {
+            console.log("admin",payload)
+            req.AdminId = payload.aud;
+            let userData = await adminModel.findById(req.AdminId);
             return next(null, userData);
         }
     })

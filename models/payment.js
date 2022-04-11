@@ -1,9 +1,14 @@
 const mongoose = require('mongoose');
 const cardSchema= mongoose.Schema({
-    customer_Id:{
+    order_id:{
         type: mongoose.Schema.Types.ObjectId,
-        ref:"customers"
+        ref:"order"
         },
+        card_id:{
+            type:mongoose.Schema.Types.ObjectId,
+            ref:"card"
+        },
+
     cardnumber:{
         type:Number,
         required:true,
@@ -14,11 +19,11 @@ const cardSchema= mongoose.Schema({
     },
     cardname:{
         type:String,
-        required:true
+        // required:true
     },
     cardholdername:{
         type:String,
-        required:true
+        // required:true
     },
     CVV:{
         type:Number,
@@ -27,14 +32,15 @@ const cardSchema= mongoose.Schema({
             if(value.toString().length!=3||value<0)
             {
         throw new Error("Enter a valid CVV number")}
-    }},
+    }
+},
     expdate:{
         type:Date,
-        required:true,
+        // required:true,
         min:'2020-01-01',
         max:'2032-12-31'
     },
-    PaymentKey:String
+    randomKey:String
 });
 
 module.exports= mongoose.model("payment",cardSchema);

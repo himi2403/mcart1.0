@@ -29,6 +29,11 @@ const orderSchema = new mongoose.Schema({
       isActive:{
           type:Boolean,
           default:true
+      },
+      TransactionId:{
+          type:String,
+          erum:["Successfull","cancel"],
+          default:null
       }
 
 },{timestamps:true}

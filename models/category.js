@@ -1,8 +1,11 @@
 const mongoose = require("mongoose")
 
 const categorySchema = mongoose.Schema({
-    categoryName:{
+    Name:{
         type:String,
+    },
+    description:{
+        type:String
     },
     isActive:{
         type:Boolean,
