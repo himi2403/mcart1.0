@@ -8,7 +8,7 @@ const token = require("../../helpers/jwt_helpers")
 
 router.post("/customer/postOrder",requestValidator(schema.getId), orderRouter.postorder)
 // router.get("/customer/postOrders/", orderRouter.updateOrderStatus)
-router.get("/customer/updateOrder/:id", orderRouter.updateOrderStatus)
+router.put("/customer/updateOrder/:id", orderRouter.updateOrderStatus)
 router.delete("/customer/cancelOrder", orderRouter.cancelOrder)
 
 router.get("/order/detail/:id", orderRouter.getOrderdetail)
