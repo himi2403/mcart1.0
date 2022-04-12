@@ -9,17 +9,20 @@ const number = require("joi/lib/types/number");
 
 
 const createCart = async (req, res) => {
+  console.log("kkk")
 let { id } = req.query
   var customer = await customermodel.findOne({ _id:id }, { _id: 1 })
   // console.log("id",req.query.id)
   if (customer != null) {
 
     const newCart = new cartmodel({
-      customerId: req.query.id
+      customerId: id
     })
-    newCart.save().then(async (result) => {
+    newCart.save()
+    .then(async (result) => {
+      console.log("djggfaksdgfas")
       await customermodel.updateOne(
-        { _id: req.query.id },
+        { _id: id },
         { $set: { cart: result._id } }
       ).then(() => {
         res.status(201).json({status: true,respone: result, code: 201,message: "cart_created_succesfully"})})
@@ -35,6 +38,7 @@ let { id } = req.query
 //addtocart
 
 const addToCart = async (req, res) => {
+  console.log("add")
   let {productId} = req.body
 let  checkUnit = await productmodel.findOne({_id:req.body.productId},{unit:1})
 console.log("checkUnit", checkUnit)
@@ -44,22 +48,23 @@ if(checkUnit.unit>=req.body.quantity){
 
 
   var customer = await customermodel.findOne({ _id: req.query.id })
-  // console.log("------------",customer);
+  console.log("------------",customer);
   var cost = await productmodel.findOne({ _id: req.body.productId },{discount_cost :1 })
 
-  // console.log("777777777777",cost);
+  console.log("777777777777",cost);
   if (customer != null || !cost) {
 
     var cartid = await customermodel.findOne({ _id : req.query.id }, { cart: 1 })
     console.log("44444444444444444",cartid);
 
     var price = await cartmodel.findOne({ _id: cartid.cart })
- console.log("price", price)
+ console.log("p", price)
 
     var discount_cost = await productmodel.findOne({ _id: req.body.productId }, { discount_cost: 1 })
 
 
     var totalcost = Number(price.price) + Number(discount_cost.discount_cost * req.body.quantity)
+    console.log("hfa",price.price,discount_cost.discount_cost ,req.body.quantity)
 
     await cartmodel.updateOne({ _id: cartid.cart }, { $set: { price: totalcost } })
 
@@ -134,6 +139,7 @@ errors: {
 };
 //UPDATE
 const updateCart = async (req, res) => {
+  console.log("update")
   var quantity = req.body.quantity;
   if (req.body.quantity == undefined || req.body.quantity == null) { quantity = 1 }
 
@@ -195,6 +201,7 @@ const updateCart = async (req, res) => {
 
 //DELETE
 const deleteFromCart = async (req, res) => {
+  console.log("de")
   //check product is it 
   var checkproduct = await productmodel.findOne({ _id: req.body.productId }, {})
   let checkcart =await cartmodel.findOne({_id:req.query.id})
@@ -257,6 +264,7 @@ else {
 //GET USER CART
 
 const getUserCart = async (req, res) => {
+  console.log("getUser")
   var cardId = await customermodel.findOne({_id:req.query.id})
   console.log("cardId",cardId)
 if(cardId)

@@ -130,6 +130,9 @@ const orderHistory = async(req,res,next) =>{
 // const orderAccecpt =async(res,req,next) =>{
 
 // }
+const cancelSingle = async (req,res,next) =>{
+    cosnt
+}
 module.exports={
     postorder,
     updateOrderStatus,

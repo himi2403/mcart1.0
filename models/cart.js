@@ -13,12 +13,12 @@ let cartSchema = new mongoose.Schema({
         },
         quantity: {
             type: Number,
-            required: true,
-            min: [1, "Quantity can not be less then 1."],
+            // required: true,
+            // min: [1, "Quantity can not be less then 1."],
           }, }],
     price:{
         type:Number,
-        default:0
+        // default:0
     },
 
    

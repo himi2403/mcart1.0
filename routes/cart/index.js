@@ -6,7 +6,8 @@ const router = express.Router()
 
 
 // router.post("/addProductInCart", requestValidator(schema.addIncart),cardController.addProductInCart)
-router.post("/createcart" ,cardController.createCart )
+// router.post("/createcart" ,cardController.createCart )
+router.post("/createcart",cardController.createCart)
 router.post("/addProductToCart", cardController.addToCart)
 router.get("/getCartByCustomerId", cardController.getUserCart)
 router.delete("/deleteFromCart", cardController.deleteFromCart)

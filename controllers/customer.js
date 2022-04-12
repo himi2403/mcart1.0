@@ -84,8 +84,8 @@ const searchAndFilter = async(req,res,next) =>{
 const loginWithPhoneNumber = async(req,res) =>{
 let {email,otp} = req.body
 
-    try{
-        if(email != null || otp !=0){
+    // try{
+        if(email && otp){
             if(otp!=null){
                 let findEmail = await customerModel.findOne({email:req.body.email})
                 console.log(findEmail)
@@ -94,19 +94,20 @@ let {email,otp} = req.body
                           let  params  = {email, otp}
                         const token = await jwt.sign(params,private_key,{expiresIn:"1d"})
                         res.send({token:token})
-                        const accessToken = await signAccessTokencustomer(customer.id);
+                        // const accessToken = await signAccessTokencustomer(customer.id);
 
                 }
                 else{
                     res.send(errors.emailNotExist)  
 
             }
-        }else{
-            res.send({error: "invalid otp"})
-        }}
-    }catch(error){
-        return res.send(error)
+            }else{
+                res.send({error: "invalid otp"})
+            }
     }
+                // }catch(error){
+                //     return res.send(error)
+                // }
 }
 const updateAddress = async (req,res,next) => {
     const {id}  = req.query
