@@ -92,8 +92,8 @@ let {email,otp} = req.body
                 if(findEmail!=null){
                     let  private_key ="sggfiqgljhfjahdjakshdjkashdjkahsdkjah";
                           let  params  = {email, otp}
-                        // const token = await jwt.sign(params,private_key,{expiresIn:"1d"})
-                        // res.send({token:token})
+                        const token = await jwt.sign(params,private_key,{expiresIn:"1d"})
+                        res.send({token:token})
                         const accessToken = await signAccessTokencustomer(customer.id);
 
                 }
