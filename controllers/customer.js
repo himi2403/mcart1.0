@@ -114,6 +114,10 @@ const updateAddress = async (req,res,next) => {
     let findCustomer
    try{
        findAddress = await addressModel.findOne({_id:id})
+       console.log("khdfhasf",findAddress)
+       if(!findAddress){
+           return res.status(401).json({response:null, sucess:false, message :"please Enter correct AddressId"})
+       }
     //    console.log(findAddress)
       const customer_Id = findAddress.customer_Id
     //   console.log("hhdfjaf",)
@@ -163,6 +167,12 @@ const getAllCustomerAddress = async(req,res,next) =>{
    }
    res.status(HttpStatus.OK).json({result : findProfile, message:"profile found",  status:200, success: true})
 }
+// const insertAddressIncustomer = async(req,res,next) =>
+// {
+//     try{
+//         const address = await address.
+//     }
+// }
 module.exports = {
     getAllProduct,
     addCustomer,
