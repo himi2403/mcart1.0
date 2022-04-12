@@ -6,6 +6,10 @@ let cartSchema = new mongoose.Schema({
         ref: "customer",
     },
 
+    price:{
+        type:Number,
+        default:0
+    },
     products: [{
        productId : {
         type: mongoose.Schema.Types.ObjectId,
@@ -16,10 +20,6 @@ let cartSchema = new mongoose.Schema({
             // required: true,
             // min: [1, "Quantity can not be less then 1."],
           }, }],
-    price:{
-        type:Number,
-        // default:0
-    },
 
    
 

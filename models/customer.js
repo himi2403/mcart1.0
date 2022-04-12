@@ -19,7 +19,8 @@ const customerSchema =  mongoose.Schema({
     },
     dob:{
         type:Date,
-        max:Date.now - 365*24*60*60*1000
+        max:Date.now() - 365*24*60*60*1000*18,
+        min:Date.now() - 365*24*60*60*1000*100
     },
     gender:{
         type:String,

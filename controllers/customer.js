@@ -44,7 +44,8 @@ const addCustomer = async(req,res,next) =>{
             return res.send(errors.customerAllreadyExist);
     }
     var customer = new customerModel( {...req.body});
-        saveDetail = await customer.save();
+      let saveDetail1 = await customer.save();
+        // saveDetail =String.toLowerCase(saveDetail1)
         // accessToken = await signAccessTokencustomer(saveDetail.id);
         // console.log("asss",accessToken);
     }catch(error){
@@ -82,8 +83,8 @@ const searchAndFilter = async(req,res,next) =>{
 }
 
 const loginWithPhoneNumber = async(req,res) =>{
-let {email,otp} = req.body
-
+let {email} = req.body
+let otp = 4444
     // try{
         if(email && otp){
             if(otp!=null){

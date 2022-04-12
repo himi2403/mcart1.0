@@ -17,6 +17,7 @@ let { id } = req.query
 
     const newCart = new cartmodel({
       customerId: id
+
     })
     newCart.save()
     .then(async (result) => {
@@ -41,7 +42,7 @@ const addToCart = async (req, res) => {
   console.log("add")
   let {productId} = req.body
 let  checkUnit = await productmodel.findOne({_id:req.body.productId},{unit:1})
-console.log("checkUnit", checkUnit)
+// console.log("checkUnit", checkUnit)
 if(checkUnit.unit>=req.body.quantity){
   console.log("quantity", req.body.quantity)
   if (req.body.quantity == undefined || req.body.quantity == null) { quantity = 1 }
@@ -64,7 +65,8 @@ if(checkUnit.unit>=req.body.quantity){
 
 
     var totalcost = Number(price.price) + Number(discount_cost.discount_cost * req.body.quantity)
-    console.log("hfa",price.price,discount_cost.discount_cost ,req.body.quantity)
+    console.log("sj",(price.price))
+    // console.log("hfa",price.price,discount_cost.discount_cost ,req.body.quantity)
 
     await cartmodel.updateOne({ _id: cartid.cart }, { $set: { price: totalcost } })
 
@@ -270,7 +272,7 @@ const getUserCart = async (req, res) => {
 if(cardId)
 {
   cartdetails = await cartmodel.findOne({_id:cardId.cart},{_id:0,products:1,price:1})
-console.log("cartdetails",cartdetails)
+console.log("cartdetails",cartdetails.cart)
 
 res.status(201).json({status: true,respone: cartdetails,code: 201,message: "cart details fetched succesfully"})}
 if(cardId!=null&&cardId.cart==null){
