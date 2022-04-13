@@ -3,7 +3,8 @@ const Merchant = require('../models/merchant')
 const jwt = require('jsonwebtoken')
 const HttpStatus = require('http-status');
 const bcryptjs = require("bcryptjs")
-const { signAccessToken } = require('../helpers/jwt_helpers')
+const { signAccessToken } = require('../helpers/jwt_helpers');
+const { result } = require('lodash');
 
 const addMerchant = async function (req, res, next) {
     let merchant;
@@ -111,28 +112,35 @@ const deleteMerchant = async(req,res, next) =>{
 }
 
 
-const merchantupdate  = async(req,res,next) =>{
-       const id = req.params.id
-    //    console.log(id)
-       let result
-    const {firstName,lastName,dateOfBirth,phoneNumber,category,brandName} = req.body
-    console.log(req.body.password)
-    //  var salt = await bcryptjs.genSalt(10)
-    //  let newPassword = await bcryptjs.hashSync(req.body.password,salt)
-     result = await Merchant.updateOne({_id:id},
-        {
-            $set:{firstName,lastName,dateOfBirth,phoneNumber,category,brandName}
-        })
-        // res.send(result)
-        .then((result) =>{
-            res.send({"result": result})
-        })
-        .catch((error) =>{
-            res.send("error", error)
-            console.log('error',error)
-        })
-
-   }
+// const merchantupdate  = async(req,res,next) =>{
+//        const {id} = req.query
+//        let result
+// try{
+//     //    console.log(id)
+//     const {firstName,lastName,dateOfBirth,phoneNumber,category,brandName} = req.body
+//     // console.log(req.body.password)
+//     //  var salt = await bcryptjs.genSalt(10)
+//     //  let newPassword = await bcryptjs.hashSync(req.body.password,salt)
+//      result = await Merchant.findOne({_id:id},
+//         {
+//             // $set:{firstName,lastName,dateOfBirth,phoneNumber,category,brandName}
+//             $set:req.body
+//         })
+//         // res.send(result)
+//         // .then((result) =>{
+//         //     res.send({Response: result, })
+//         // })
+//         // .catch((error) =>{
+//         //     res.send("error", error)
+//         //     console.log('error',error)
+//         // })
+//         return res.status(200).json({Response:result,success:true})
+//     }
+//     catch(error){
+//         return res.status(401).json({Response:error,error:error.message,success:false})
+//     }
+//    }
+   
     const merchantProfile = async(req,res, next) =>{
         let merchant
         try{
@@ -188,8 +196,24 @@ const merchantLogin =  async (req, res) => {
            res.status(200).json({token:token});
             }
           }catch(error) {
-              res.status(500).json({error: error, message:error.message})
+              res.status(401).json({error: error, message:error.message})
       }
+    }
+    const merchantupdate = async(req,res,next) =>{
+        let {id} = req.query
+        let result
+        console.log("hosdf",id)
+        try{
+    const {firstName,lastName,dateOfBirth,phoneNumber,category,brandName} = req.body
+
+            result = await Merchant.updateOne({_id:id},
+                {$set:{firstName,lastName,dateOfBirth,phoneNumber,category,brandName}}
+                )
+                return res.status(200).json({response:result,success:true,message:"updated successfully"})
+        }
+        catch(error){
+            return res.status(401).json({Response:error, error:error.merchant, success:false})
+        }
     }
 module.exports = {
     addMerchant,

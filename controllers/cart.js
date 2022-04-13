@@ -65,7 +65,7 @@ if(checkUnit.unit>=req.body.quantity){
 
 
     var totalcost = Number(price.price) + Number(discount_cost.discount_cost * req.body.quantity)
-    console.log("sj",(price.price))
+    // console.log("sj",(price.price))
     // console.log("hfa",price.price,discount_cost.discount_cost ,req.body.quantity)
 
     await cartmodel.updateOne({ _id: cartid.cart }, { $set: { price: totalcost } })

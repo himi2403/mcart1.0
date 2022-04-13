@@ -11,12 +11,19 @@ const customer = require("../models/customer")
 const postorder = async(req,res,next) =>{
     let neworder
     const {id} = req.query
+
+ 
+    // console.log("ajdfig", abc)
+
     const priceProduct = await cartModel.findOne({_id:id})
-    console.log("priceProduct", priceProduct)
+    // console.log("priceProduct", priceProduct)
     //   const productPrice =  JSON.parse(JSON.stringify(priceProduct)).price;
     const productPrice = JSON.parse(JSON.stringify(priceProduct)).price
-      console.log("productPrice", productPrice)
-   try{
+    //   console.log("productPrice", productPrice)
+   try{   
+       const abc = await productModel.find({_id:req.body.product_id},{unit:1})
+    if(abc[0].unit>req.body.quantity){
+        console.log("kjdf")
        const orderPlaced = new orderModel({
         product_id:req.body.product_id,
         customer_id:req.body.customer_id,
@@ -26,19 +33,16 @@ const postorder = async(req,res,next) =>{
         status   :req.body.status,
         isActive:req.body.isActive,
        })
-     console.log("customer",customer)
-    //    const checkCustomer =  await customerModel.find({})
-    //    console.log("check",checkCustomer);
-    //    if(!checkCustomer){
-    //        return res.status(500).json({message:"Please Login with this email", status:true})
-    //    }else{
-    // const order = new orderModel(req.body )
+       const unitUpdae =  abc[0]
      let result = await orderPlaced.save()
-  
+     return res.status(HttpStatus.OK).json({status:200, sucess: true,response:result})
+    }
+    else{
+        return res.status(401).json({error:error,message:"message this units not available "})
+    }
     //  res.status(HttpStatus.OK).json({status:true, response:result, })
     //    }
 
-   return res.status(HttpStatus.OK).json({status:200, sucess: true,response:result})
 }
    catch(error){
     return res.status(201).json({status:false,Respone:null,status:403,errors:{error_code:"Order Did Not get posted ", error_msg:error.message }})

@@ -25,7 +25,7 @@ requestValidator(schema.getId,"params"), merchantController.deleteMerchant )
 
 // router.get("/merchant/inventory/:id", merchantController.productgetbymerchantid)
 
-router.put("/merchant/updateMerchant/:id", token.verifyAccessToken,merchantController.merchantupdate)
+router.put("/merchant/updateMerchant", token.verifyAccessToken,merchantController.merchantupdate)
 
 router.get("/merchant/merchantprofile/:id" ,token.verifyAccessToken,requestValidator(schema.getId,"params"),merchantController.merchantProfile )
 
