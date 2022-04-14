@@ -14,7 +14,7 @@ router.get("/merchant/inventory/",productRouter.productgetbymerchantid)
 router.post("/addcategory", categoryRouter.addCategory)
 //router.put("merchant/updateProduct/:id",token.verifyAccessToken, productRouter.updateProduct )
 
-router.post("/product/allProduct", productRouter.allProduct)
+router.get("/product/allProduct", productRouter.allProduct)
 router.get("/product/productSort",productRouter.productSort )
 router.get("/product/categoryName/" ,productRouter.filterByCategoriesName)
 router.get("/product/filterbrand/", productRouter.filterByBrand)

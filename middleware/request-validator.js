@@ -10,7 +10,9 @@ const requestValidator = (schema, source = 'body') => async (req, res, next) => 
             stripUnknown: { objects: true, arrays: true },
             convert: true,
             abortEarly: false
+            
         });
+       
     }
     catch (err) {
         if (err.details) {
@@ -23,8 +25,12 @@ const requestValidator = (schema, source = 'body') => async (req, res, next) => 
 
         return next(err);
     }
-
-    return next();
+    if(Object.keys(data).length>0){
+        return next();
+    }else{
+        res.send("empty body")
+    }
+   
 };
 
 module.exports = {

@@ -5,10 +5,12 @@ const errors = require("../errors")
 const HttpStatus = require("http-status")
 const jwt_helpers = require("../helpers/jwt_helpers")
 const jwt = require("jsonwebtoken")
-const { result } = require("lodash")
+const { result, find } = require("lodash")
+const crypto = require("crypto")
 const { signAccessTokencustomer } = require("../helpers/jwt_helpers")
 
 const { Types } = require('mongoose');
+const res = require("express/lib/response")
 // const errors = require("../errors/index")
 // const customer = require("../models/customer")
 
@@ -39,35 +41,37 @@ const addCustomer = async(req,res,next) =>{
     let saveDetail
     let accessToken
     try{
+//         var val = Math.floor(1000 + Math.random() * 9000);
+// console.log(val);
         const customerAllreadyExist = await customerModel.findOne({ "email": { $regex: new RegExp(email, "i") } });
         if (customerAllreadyExist) {
             return res.send(errors.customerAllreadyExist);
     }
-    var customer = new customerModel( {...req.body});
-      let saveDetail1 = await customer.save();
+    var customer = new customerModel( {   ...req.body    });
+      saveDetail = await customer.save();
         // saveDetail =String.toLowerCase(saveDetail1)
-        // accessToken = await signAccessTokencustomer(saveDetail.id);
+        accessToken = await signAccessTokencustomer(saveDetail.id);
         // console.log("asss",accessToken);
+        res.status(HttpStatus.OK).json({result :saveDetail, status:200, success:true, token:accessToken})
     }catch(error){
         return next({error: error, message:error.message, status:500, success: false})
     }
-    res.status(HttpStatus.OK).json({result :saveDetail, status:200, success:true, token:accessToken})
-}
-const findcustomerDeatil = async(req,res,next) =>{
-    // let findDetail
-    let {email} = req.query
-    try{
-        const detail  = await customerModel.find({"email": {$regex: new RegExp(email, "i")}}).populate("address")
-        if(!detail){
-            return res.send(errors.emailNotExist)
-        }else{
-            res.status(HttpStatus.OK).json({result:detail, success:200, status:true})
-        }
-    }catch(error){
+}   
+// const findcustomerDeatil = async(req,res,next) =>{
+//     // let findDetail
+//     let {email} = req.query
+//     try{
+//         const detail  = await customerModel.find({"email": {$regex: new RegExp(email, "i")}}).populate("address")
+//         if(!detail){
+//             return res.send(errors.emailNotExist)
+//         }else{
+//             res.status(HttpStatus.OK).json({result:detail, success:200, status:true})
+//         }
+//     }catch(error){
 
-        return res.send({err:error.message, status:false, success:false})
-    }
-}
+//         return res.send({err:error.message, status:false, success:false})
+//     }
+// }
 const searchAndFilter = async(req,res,next) =>{
  try{
     const regex = new RegExp(req.query.name, "i")
@@ -83,12 +87,11 @@ const searchAndFilter = async(req,res,next) =>{
 }
 
 const loginWithPhoneNumber = async(req,res) =>{
-let {email} = req.body
-let otp = 4444
-    // try{
-        if(email && otp){
-            if(otp!=null){
-                let findEmail = await customerModel.findOne({email:req.body.email})
+let {phoneNumber,otp} = req.body
+    try{
+        if(phoneNumber && otp){
+            if(otp){
+                let findEmail = await customerModel.find({phoneNumber:phoneNumber},{otp:otp})
                 console.log(findEmail)
                 if(findEmail!=null){
                     let  private_key ="sggfiqgljhfjahdjakshdjkashdjkahsdkjah";
@@ -106,9 +109,9 @@ let otp = 4444
                 res.send({error: "invalid otp"})
             }
     }
-                // }catch(error){
-                //     return res.send(error)
-                // }
+                }catch(error){
+                    return res.send(error)
+                }
 }
 const updateAddress = async (req,res,next) => {
     const {id}  = req.query
@@ -138,13 +141,52 @@ const updateAddress = async (req,res,next) => {
    }
 }
    
+// const getAllCustomerAddress = async(req,res,next) =>{
+//     let findProfile
+//     // let id = req.query.id
+//    try{
+
+//         findProfile = await customerModel.aggregate([
+//             { 
+//                 $match:{_id:Types.ObjectId(req.query.id)}
+//             },
+//             {
+//                 $lookup:{
+//                     from:"addresses",
+//                     localField:"_id",
+//                     foreignField:"customer_Id",
+//                     as:"customer_Address"
+//                 },
+                
+//             },
+//             {
+//                 $unwind:"$customer_Address"
+                
+//             }
+//         ])
+//         console.log("kdfjasd",findProfile )
+//     }catch(error){
+//         return next({error:error})
+//     }
+//     res.status(HttpStatus.OK).json({result : findProfile, message:"profile found",  status:200, success: true})
+// }
+// const insertAddressIncustomer = async(req,res,next) =>
+// {
+//     try{
+//         const address = await address.
+//     }
+// }
+   
 const getAllCustomerAddress = async(req,res,next) =>{
     let findProfile
    try{
+    // if(!findProfile){
+    //     res.send({message:"this Profile not exit", status:500, sucess: false})
+    // }
         // findProfile = await customerModel.findById(req.params.id)
         findProfile = await customerModel.aggregate([
             { 
-                $match:{_id:Types.ObjectId(req.params.id)}
+                $match:{_id:Types.ObjectId(req.query.id)}
             },
             {
                 $lookup:{
@@ -161,27 +203,37 @@ const getAllCustomerAddress = async(req,res,next) =>{
             }
         ])
         console.log("kdfjasd",findProfile )
-   }catch(error){
-       return next({error:error})
-   }
-   if(!findProfile){
-       res.send({message:"this Profile not exit", status:500, sucess: false})
-   }
-   res.status(HttpStatus.OK).json({result : findProfile, message:"profile found",  status:200, success: true})
+    }catch(error){
+        return res.status(403).send({error:error,error:error.message, success:false})
+    }
+    return  res.status(HttpStatus.OK).json({result : findProfile, message:"profile found",  status:200, success: true})
+
 }
-// const insertAddressIncustomer = async(req,res,next) =>
-// {
-//     try{
-//         const address = await address.
-//     }
-// }
+const genrateOtp = async(req,res) =>{
+    let {email} = req.body
+    try{
+        const phone =  await customerModel.findOne({email:email},{email:1})
+        console.log("jdpfia", phone)
+        if(phone){
+            var generate = await customerModel.updateOne({email:email},{
+                $set:{
+                    otp:Math.floor(1000 + Math.random() * 9000)
+                }
+            })
+          return  res.status(200).json({response:generate,success:true})
+        }
+    }catch(error) {
+        return res.status(401).json({response:error, error:error.message, success: false})
+    }
+}
 module.exports = {
     getAllProduct,
     addCustomer,
-    findcustomerDeatil,
+    // findcustomerDeatil,
     searchAndFilter,
     loginWithPhoneNumber,
     getAllCustomerAddress,
     updateAddress,
+    genrateOtp
     // addNewAddress
 }

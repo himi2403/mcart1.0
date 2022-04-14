@@ -3,19 +3,22 @@ const Schema = mongoose.Schema;
 const bcrypt = require('bcryptjs');
 const bcryptjs = require("bcryptjs");
 const boolean = require("joi/lib/types/boolean");
+const { lowerCase } = require("lodash");
 
 const customerSchema =  mongoose.Schema({
     firstName:{
         type:String,
         minLength:[3,"Enter minimum 2 words"],
         maxLength:[30,"Enter the maximum 30"],
-        match:[/^[A-Z]+[a-zA-Z ]*([A-Z]*[a-z]+[ ])*[ ]*[0-9]*$/,"Enter valid first name"]
+        // match:[/^[A-Z]+[a-zA-Z ]*([A-Z]*[a-z]+[ ])*[ ]*[0-9]*$/,"Enter valid first name"],
+        lowercase:true
     },
     lastName:{
         type:String,
         minLength:[3,"Enter minimum 2 words"],
         maxLength:[30,"Enter the maximum 30"],
-        match:[/^[A-Z]+[a-zA-Z ]*([A-Z]*[a-z]+[ ])*[ ]*[0-9]*$/,"Enter valid lastname name"]
+        // match:[/^[A-Z]+[a-zA-Z ]*([A-Z]*[a-z]+[ ])*[ ]*[0-9]*$/,"Enter valid lastname name"]
+        lowercase:true
     },
     dob:{
         type:Date,
@@ -50,6 +53,10 @@ const customerSchema =  mongoose.Schema({
    },
    isActive:{
        type:Boolean
+   },
+   otp:{
+       type:String,
+       default:null
    },
   
    address:{

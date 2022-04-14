@@ -33,10 +33,19 @@ const postorder = async(req,res,next) =>{
         status   :req.body.status,
         isActive:req.body.isActive,
        })
-       const unitUpdae =  abc[0]
-     let result = await orderPlaced.save()
+    //    const unitUpdae =  abc[0]
+    
+    let result = await orderPlaced.save().then( async() =>{
+        const updateunit = await productModel.findOne({_id:req.body.product_id},{unit:1})
+    //  console.log("jfafkgdf",updateunit)
+    let new_unit = updateunit.unit - req.body.quantity
+    const updateQuantity = await priceProduct.updateOne({_id:req.body.product_id},{
+        $set:{unit:new_unit}
+    })
+    })
      return res.status(HttpStatus.OK).json({status:200, sucess: true,response:result})
     }
+
     else{
         return res.status(401).json({error:error,message:"message this units not available "})
     }

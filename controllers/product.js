@@ -132,7 +132,7 @@ const filterByCategoriesName = async (req, res, next) => {
     if (req.query.skip != 0 || req.query.skip != 0) {
         skip = req.query.skip
     }
-    const { categoryName } = req.body
+    const { categoryName } = req.params
     const data = await productModel.find({ "categoryName": { $regex: new RegExp(categoryName, "i") } })
     // console.log(data)
     if (!data) {

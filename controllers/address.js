@@ -15,6 +15,9 @@ const UserAddress = async(req,res,next) =>{
    }
    res.status(HttpStatus.OK).json({result :saveAddress, status:200, success:true})
 }
+
+
+
 const deleteAddress = async(req,res,next) =>{
     let deleteAddress 
     const{id} = req.query

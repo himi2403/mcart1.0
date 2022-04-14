@@ -12,6 +12,14 @@ const Joi = require("joi")
     isActive:Joi.boolean().required(),
     address:Joi.string().allow(null, '')
  })
+
+ const generateOtp = Joi.object().keys({
+   phoneNumber:Joi.string().regex(/^[6-9]{1}[0-9]{10}$/)
+ })
+ const addresssupdate =Joi.object().keys({
+    id:Joi.string()
+ })
 module.exports ={
-   addAddress
+   addAddress,
+   addresssupdate
 }
